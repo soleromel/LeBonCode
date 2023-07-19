@@ -22,7 +22,7 @@ class Advert
     private ?string $productDescription = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 12, scale: 2)]
-    private ?float $price = null;
+    private ?string $price = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $postalCode = null;
