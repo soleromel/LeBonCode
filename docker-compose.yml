@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   mysql:
-    image: library/mysql:5.7.30
+    image: library/mysql:8.0.32
     restart: always
     ports:
       - 3310:3306
@@ -10,5 +10,6 @@ services:
       MYSQL_DATABASE: leboncode
     volumes:
       - admin-leboncode:/var/lib/mysql
+
 volumes:
   admin-leboncode:
