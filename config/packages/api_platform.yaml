@@ -1,0 +1,10 @@
+api_platform:
+    exception_to_status:
+        AdvertSearchUnauthorizedParamException: 400
+    formats:
+        jsonld: [ 'application/ld+json' ]
+        json: [ 'application/json' ]
+    enable_docs: false
+    enable_entrypoint: false
+    enable_swagger: false
+    enable_swagger_ui: false
