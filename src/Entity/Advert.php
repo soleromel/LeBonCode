@@ -3,11 +3,57 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\AdvertSearchAction;
 use App\Repository\AdvertRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdvertRepository::class)]
+#[ApiResource(
+    description: 'A rare and valuable treasure.',
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new GetCollection(
+            name: 'search_advert',
+            uriTemplate: '/search',
+            controller: AdvertSearchAction::class,
+            openapiContext: [
+                'parameters' => [
+                    [
+                        'name' => 'title',
+                        'in' => 'query',
+                        'schema' => [
+                            'type' => 'string',
+                        ],
+                    ],
+                    [
+                        'name' => 'minPrice',
+                        'in' => 'query',
+                        'schema' => [
+                            'type' => 'integer',
+                        ],
+                    ],
+                    [
+                        'name' => 'maxPrice',
+                        'in' => 'query',
+                        'schema' => [
+                            'type' => 'integer',
+                        ],
+                    ],
+                ],
+            ]
+        ),
+        new Post(),
+        new Patch(),
+        new Delete(),
+    ]
+)]
 class Advert
 {
     #[ORM\Id]
@@ -30,6 +76,11 @@ class Advert
     #[ORM\Column(length: 255)]
     private ?string $city = null;
 
+    public function __construct(string $title)
+    {
+        $this->title = $title;
+    }
+
 
     public function getId(): ?int
     {
@@ -39,13 +90,6 @@ class Advert
     public function getTitle(): ?string
     {
         return $this->title;
-    }
-
-    public function setTitle(string $title): static
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     public function getProductDescription(): ?string

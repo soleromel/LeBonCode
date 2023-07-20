@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Advert;
+use App\Enum\AdvertFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,28 +22,25 @@ class AdvertRepository extends ServiceEntityRepository
         parent::__construct($registry, Advert::class);
     }
 
-//    /**
-//     * @return Advert[] Returns an array of Advert objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Advert
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @param array<mixed> $params
+     * @return Advert[]
+     */
+    public function findByApiSearchParams(array $params): array
+    {
+        $qb = $this->createQueryBuilder('a');
+        if (isset($params[AdvertFilter::TITLE])) {
+            $qb->andWhere('a.title LIKE :title')
+                ->setParameter('title', '%' . $params[AdvertFilter::TITLE] . '%');
+        }
+        if (isset($params[AdvertFilter::MIN_PRICE])) {
+            $qb->andWhere('a.price >= :minPrice')
+                ->setParameter('minPrice', $params[AdvertFilter::MIN_PRICE]);
+        }
+        if (isset($params[AdvertFilter::MAX_PRICE])) {
+            $qb->andWhere('a.price <= :maxPrice')
+                ->setParameter('maxPrice', $params[AdvertFilter::MAX_PRICE]);
+        }
+        return $qb->getQuery()->getResult();
+    }
 }
