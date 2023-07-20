@@ -6,9 +6,8 @@ security:
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
+            id: App\Security\UserProvider
+        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -16,6 +15,8 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            json_login:
+                check_path: api_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
