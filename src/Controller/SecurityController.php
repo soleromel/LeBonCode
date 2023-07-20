@@ -13,13 +13,14 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'api_login', methods: ['POST'])]
     public function index(#[CurrentUser] ?User $user): Response
     {
-        if ($user === null) {
+        if (null === $user) {
             return $this->json([
-              'message' => 'Invalid credentials'
+              'message' => 'Invalid credentials',
             ], Response::HTTP_UNAUTHORIZED);
         }
+
         return $this->json([
-          'user' => $user->getUserIdentifier()
+          'user' => $user->getUserIdentifier(),
         ]);
     }
 

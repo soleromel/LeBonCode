@@ -24,6 +24,7 @@ class AdvertRepository extends ServiceEntityRepository
 
     /**
      * @param array<mixed> $params
+     *
      * @return Advert[]
      */
     public function findByApiSearchParams(array $params): array
@@ -31,7 +32,7 @@ class AdvertRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('a');
         if (isset($params[AdvertFilter::TITLE])) {
             $qb->andWhere('a.title LIKE :title')
-                ->setParameter('title', '%' . $params[AdvertFilter::TITLE] . '%');
+                ->setParameter('title', '%'.$params[AdvertFilter::TITLE].'%');
         }
         if (isset($params[AdvertFilter::MIN_PRICE])) {
             $qb->andWhere('a.price >= :minPrice')
@@ -41,6 +42,7 @@ class AdvertRepository extends ServiceEntityRepository
             $qb->andWhere('a.price <= :maxPrice')
                 ->setParameter('maxPrice', $params[AdvertFilter::MAX_PRICE]);
         }
+
         return $qb->getQuery()->getResult();
     }
 }

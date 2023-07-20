@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Advert;
+use App\Enum\AdvertFilter;
+use App\Exception\AdvertSearchUnauthorizedParamException;
 use App\Repository\AdvertRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use App\Exception\AdvertSearchUnauthorizedParamException;
-use App\Enum\AdvertFilter;
 
 #[AsController]
 class AdvertSearchAction extends AbstractController
@@ -40,6 +40,7 @@ class AdvertSearchAction extends AbstractController
     private function isContainsInvalidParam(array $queryParams): bool
     {
         $unwanted = array_diff(array_keys($queryParams), AdvertFilter::getAllowedQueryParams());
+
         return empty($unwanted);
     }
 }

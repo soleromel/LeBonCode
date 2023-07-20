@@ -81,7 +81,6 @@ class Advert
         $this->title = $title;
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
